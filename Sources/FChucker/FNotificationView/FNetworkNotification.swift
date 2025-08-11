@@ -17,7 +17,7 @@ public extension View {
 
 
 struct NetworkToastOverlay: ViewModifier {
-    private let fRequestStore = FRequestStore.shared
+    @StateObject private var fRequestStore = FRequestStore.shared
     @State private var showNetworkView = false
     @State private var activeToasts: [FNotificationItemModel] = []
     @State private var lastProcessedId: UUID?
@@ -55,7 +55,7 @@ struct NetworkToastOverlay: ViewModifier {
             .sheet(isPresented: $showNetworkView) {
                 FNetworkView()
             }
-            .onChange(of: fRequestStore.requestList, { oldModel, newModel in
+            .onChange(of: fRequestStore.requestList, perform: { _ in
                 checkForNewRequests()
             })
     }

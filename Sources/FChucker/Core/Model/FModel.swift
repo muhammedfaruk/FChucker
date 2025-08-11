@@ -33,4 +33,28 @@ final class FModel: Equatable {
     static func == (lhs: FModel, rhs: FModel) -> Bool {
         return lhs.id == rhs.id
     }
+    
+    func generateCurlCommand() -> String? {
+        guard let method = self.method, let url = self.url else {
+            return nil
+        }
+        
+        var curlCommand = "curl -X \(method) \"\(url)\""
+        
+        
+        if let headers = self.headers {
+            for (key, value) in headers {
+                if let valueString = value as? String {
+                    curlCommand += " -H \"\(key): \(valueString)\""
+                }
+            }
+        }
+        
+        
+        if let requestBodyData = self.requestBodyData, let bodyString = String(data: requestBodyData, encoding: .utf8) {
+            curlCommand += " -d \"\(bodyString)\""
+        }
+        
+        return curlCommand
+    }
 }

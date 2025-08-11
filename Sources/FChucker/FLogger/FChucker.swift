@@ -17,12 +17,12 @@ public final class FChucker {
     }
 }
 
-@Observable
-final class FRequestStore {
+
+final class FRequestStore: ObservableObject {
     @MainActor static let shared = FRequestStore()
     private init() {}
     
-    var requestList = [FModel]()
+    @Published var requestList = [FModel]()
         
     func addRequst(_ request: FModel) {
         let isContains = self.requestList.contains(where: {$0.id == request.id})

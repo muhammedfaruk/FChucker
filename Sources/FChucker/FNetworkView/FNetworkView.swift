@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct FNetworkView: View {
-    private var fRequestStore = FRequestStore.shared
+    @StateObject private var fRequestStore = FRequestStore.shared
     
     var body: some View {
-        NavigationStack {
+        NavigationView {
             NetworkRequestsList(requests: fRequestStore.requestList.reversed())
                 .navigationTitle("Network Requests")
                 .toolbar {
