@@ -28,7 +28,7 @@ private struct RequestInfoSection: View {
                     .foregroundColor(.white)
                     .padding(.horizontal, 6)
                     .padding(.vertical, 1)
-                    .background(statusColor)
+                    .background(FUIHelper.methodColor(for: request))
                     .cornerRadius(3)
             }
             

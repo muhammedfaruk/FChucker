@@ -73,7 +73,7 @@ struct RequestMethodBadge: View {
             .foregroundColor(.white)
             .padding(.horizontal, 8)
             .padding(.vertical, 2)
-            .background(FUIHelper.statusConfig(for: request).color)
+            .background(FUIHelper.methodColor(for: request))
             .cornerRadius(4)
     }
 }

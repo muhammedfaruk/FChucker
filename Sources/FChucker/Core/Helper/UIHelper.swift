@@ -28,6 +28,23 @@ final class FUIHelper {
         }
     }
     
+    static func methodColor(for model: FModel) -> Color {
+        guard let method = model.method?.uppercased() else { return .gray }
+
+            switch method {
+            case "POST":
+                return .green
+            case "GET":
+                return .blue
+            case "PUT":
+                return .orange
+            case "DELETE":
+                return .red
+            default:
+                return .gray
+            }
+        }
+    
     static func jsonTypeColor(value: Any) -> Color {
         if value is String {
             return .green
