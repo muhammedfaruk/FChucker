@@ -11,7 +11,10 @@ A powerful network debugging tool for iOS applications built with SwiftUI. FChuc
 - 📊 **Request Details**: View complete request/response data including headers, body, and status codes
 - ⚡ **Lightweight**: Minimal performance impact on your app
 
-https://github.com/user-attachments/assets/fd7f3635-763b-4d31-a6dc-2f8c8912f9a5
+
+
+https://github.com/user-attachments/assets/0be26dfc-c0c9-4970-af8f-1df02478cd42
+
 
 
 ## Requirements
