@@ -141,6 +141,36 @@ private struct HeadersSection: View {
     }
 }
 
+private struct CurlSection: View {
+    let curl: String
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Text("CURL")
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                    .padding(.bottom, 2)
+                
+                Spacer()
+                
+                Image(systemName: "document.on.document")
+                    .foregroundStyle(Color.blue)
+                    .onTapGesture {
+                        UIPasteboard.general.string = curl
+                    }
+            }
+            
+            
+            Text(curl)
+                .font(.system(.caption, design: .monospaced))
+        }
+        .padding(12)
+        .background(Color.gray.opacity(0.1))
+        .cornerRadius(8)
+    }
+}
+
 // MARK: - JSON Content Section Component
 private struct JSONContentSection: View {
     let title: String
@@ -244,6 +274,17 @@ struct FNetworkDetailView: View {
         }
         .navigationTitle("Request Detail")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigation) {
+                Button {
+                    let curl = request.generateCurlCommand()
+                    UIPasteboard.general.string = curl
+                } label: {
+                    Text("Copy cURL")
+                }
+
+            }
+        }
     }
     
     // MARK: - Request Detail View
@@ -253,6 +294,10 @@ struct FNetworkDetailView: View {
             
             if let headers = request.headers, !headers.isEmpty {
                 HeadersSection(headers: headers)
+            }
+            
+            if let curl = request.generateCurlCommand() {
+                CurlSection(curl: curl)
             }
         }
     }

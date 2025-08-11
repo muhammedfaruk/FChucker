@@ -49,10 +49,10 @@ final class FModel: Equatable {
                 }
             }
         }
-        
-        
+                
         if let requestBodyData = self.requestBodyData, let bodyString = String(data: requestBodyData, encoding: .utf8) {
-            curlCommand += " -d \"\(bodyString)\""
+            let escapedBodyString = bodyString.replacingOccurrences(of: "\"", with: "\\\"")
+            curlCommand += " -d \"\(escapedBodyString)\""
         }
         
         return curlCommand
