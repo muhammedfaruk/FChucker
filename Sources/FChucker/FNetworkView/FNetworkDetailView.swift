@@ -143,6 +143,7 @@ private struct HeadersSection: View {
 
 private struct CurlSection: View {
     let curl: String
+    @Binding var showCopiedMessage: Bool
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -158,6 +159,7 @@ private struct CurlSection: View {
                     .foregroundStyle(Color.blue)
                     .onTapGesture {
                         UIPasteboard.general.string = curl
+                        showCopiedMessage = true
                     }
             }
             
@@ -213,6 +215,7 @@ struct FNetworkDetailView: View {
     @State private var selectedSegment = 0
     @State private var formattedResponse: String = ""
     @State private var isJSONValid: Bool = false
+    @State private var showCopiedMessage: Bool = false
     
     private var segmentTitles: [String] {
         var titles = ["Request Detail"]
@@ -279,12 +282,14 @@ struct FNetworkDetailView: View {
                 Button {
                     let curl = request.generateCurlCommand()
                     UIPasteboard.general.string = curl
+                    showCopiedMessage = true
                 } label: {
                     Text("Copy cURL")
                 }
 
             }
         }
+        .toast(isPresented: $showCopiedMessage)
     }
     
     // MARK: - Request Detail View
@@ -297,7 +302,7 @@ struct FNetworkDetailView: View {
             }
             
             if let curl = request.generateCurlCommand() {
-                CurlSection(curl: curl)
+                CurlSection(curl: curl, showCopiedMessage: $showCopiedMessage)
             }
         }
     }
