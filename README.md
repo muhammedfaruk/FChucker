@@ -11,7 +11,10 @@ A powerful network debugging tool for iOS applications built with SwiftUI. FChuc
 - 📊 **Request Details**: View complete request/response data including headers, body, and status codes
 - ⚡ **Lightweight**: Minimal performance impact on your app
 
-https://github.com/user-attachments/assets/fd7f3635-763b-4d31-a6dc-2f8c8912f9a5
+
+
+https://github.com/user-attachments/assets/0be26dfc-c0c9-4970-af8f-1df02478cd42
+
 
 
 ## Requirements
@@ -26,7 +29,7 @@ https://github.com/user-attachments/assets/fd7f3635-763b-4d31-a6dc-2f8c8912f9a5
 Add FChucker to your project using Swift Package Manager:
 
 1. In Xcode, go to `File` → `Add Package Dependencies`
-2. Enter the repository URL: `https://github.com/yourusername/FChucker`
+2. Enter the repository URL: `https://github.com/muhammedfaruk/FChucker`
 3. Select the version you want to use
 4. Add the package to your target
 
@@ -34,7 +37,7 @@ Or add it to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/yourusername/FChucker", from: "1.0.0")
+    .package(url: "https://github.com/muhammedfaruk/FChucker", from: "1.0.0")
 ]
 ```
 
