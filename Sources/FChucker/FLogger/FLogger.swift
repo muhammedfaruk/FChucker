@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class FLogger: URLProtocol, URLSessionDelegate,  @unchecked Sendable {
+final class FLogger: URLProtocol, @unchecked Sendable {
     private var response: URLResponse?
     private var responseData: Data?
     let fModel = FModel()
@@ -26,6 +26,9 @@ final class FLogger: URLProtocol, URLSessionDelegate,  @unchecked Sendable {
     }
     
     private class func canHandleRequest(_ request: URLRequest) -> Bool {
+        guard URLProtocol.property(forKey: "fChucker", in: request) == nil else {
+            return false
+        }
         guard let url = request.url,
               (url.absoluteString.hasPrefix("http") || url.absoluteString.hasPrefix("https")) else {
             return false
@@ -39,7 +42,9 @@ final class FLogger: URLProtocol, URLSessionDelegate,  @unchecked Sendable {
     }
     
     override func startLoading() {
-        session.dataTask(with: request).resume()
+        let mutableRequest = (request as NSURLRequest).mutableCopy() as! NSMutableURLRequest
+        URLProtocol.setProperty(true, forKey: "fChucker", in: mutableRequest)
+        session.dataTask(with: mutableRequest as URLRequest).resume()
     }
     
     override func stopLoading() {
@@ -91,9 +96,20 @@ extension FLogger: URLSessionDataDelegate {
         }
     }
     
-    func urlSession(_ session: URLSession, task: URLSessionTask, willPerformHTTPRedirection response: HTTPURLResponse, newRequest request: URLRequest, completionHandler: @escaping (URLRequest?) -> Void) {
-        client?.urlProtocol(self, wasRedirectedTo: request, redirectResponse: response)
-        completionHandler(request)
+    public func urlSession(_ session: URLSession, task: URLSessionTask, willPerformHTTPRedirection response: HTTPURLResponse, newRequest request: URLRequest, completionHandler: @escaping (URLRequest?) -> Void) {
+        
+        let updatedRequest: URLRequest
+        if URLProtocol.property(forKey: "fChucker", in: request) != nil {
+            let mutableRequest = (request as NSURLRequest).mutableCopy() as! NSMutableURLRequest
+            URLProtocol.removeProperty(forKey: "fChucker", in: mutableRequest)
+            
+            updatedRequest = mutableRequest as URLRequest
+        } else {
+            updatedRequest = request
+        }
+        
+        client?.urlProtocol(self, wasRedirectedTo: updatedRequest, redirectResponse: response)
+        completionHandler(updatedRequest)
     }
     
     func urlSession(
@@ -103,7 +119,6 @@ extension FLogger: URLSessionDataDelegate {
     ) {
         if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
             if let serverTrust = challenge.protectionSpace.serverTrust {
-                // Server trust'ı kullanarak kabul et
                 let credential = URLCredential(trust: serverTrust)
                 completionHandler(.useCredential, credential)
                 return

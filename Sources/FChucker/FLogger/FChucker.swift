@@ -9,10 +9,11 @@ import Foundation
 
 public final class FChucker {
     public static func start() {
+        URLSessionConfiguration.implementFChucker()
         URLProtocol.registerClass(FLogger.self)
     }
-            
-    static func stop() {
+    
+    public static func stop() {
         URLProtocol.unregisterClass(FLogger.self)
     }
 }
